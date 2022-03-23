@@ -83,8 +83,6 @@ textarea:focus {
   body {
     background: #333;
     color: white;
-    --hljs-background: #333 !important;
-    --hljs-foreground: white !important;
   }
   textarea,
   input {
@@ -104,5 +102,6 @@ textarea:focus {
 	border: 1px solid white;
 	border-radius: 5px;
 	padding: 0.5rem;
+	width: 95%;
   }
   

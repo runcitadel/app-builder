@@ -11,6 +11,8 @@
   let website = "";
   let repository = "";
   let defaultPassword = "";
+  let mainImage = "";
+  let mainPort = 0;
   $: appData = YAML.stringify({
     metadata: {
       name,
@@ -22,7 +24,12 @@
       repository,
       ...(defaultPassword ? { defaultPassword } : {}),
     },
-    containers: [],
+    containers: [{
+      name: "main",
+      image: mainImage,
+      port: parseInt(mainPort),
+      permissions: ["lnd"]
+    }],
   });
 </script>
 
@@ -71,6 +78,18 @@
       bind:value={defaultPassword}
       id="appPw"
       placeholder="password123!"
+    />
+    <h2>Containers</h2>
+    <h4>Main container</h4>
+    <label for="mainImage">Docker container</label><input
+      bind:value={mainImage}
+      id="mainImage"
+      placeholder="ghcr.io/runcitadel/lnbits-legends:main"
+    />
+    <label for="mainPort">Port the container exposes</label><input
+      bind:value={mainPort}
+      id="mainPort"
+      placeholder="3000"
     />
   </div>
   <div class="right-view half highlight">
