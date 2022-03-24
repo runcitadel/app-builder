@@ -13,6 +13,14 @@
   let defaultPassword = "";
   let mainImage = "";
   let mainPort = 0;
+  let requiresLndPermission = true;
+  let requiresBitcoinPermission = true;
+  let requiresElectrumPermission = true;
+  $: dependencies = [
+    ...(requiresLndPermission ? ["lnd"] : []),
+    ...(requiresBitcoinPermission ? ["bitcoin"] : []),
+    ...(requiresElectrumPermission ? ["electrum"] : [])
+  ]
   $: appData = YAML.stringify({
     version: 2,
     metadata: {
@@ -24,12 +32,13 @@
       website,
       repository,
       ...(defaultPassword ? { defaultPassword } : {}),
+      dependencies,
     },
     containers: [{
       name: "main",
       image: mainImage,
       port: parseInt(mainPort),
-      permissions: ["lnd"]
+      permissions: [...dependencies],
     }],
   });
 </script>
@@ -92,6 +101,23 @@
       id="mainPort"
       placeholder="3000"
     />
+    <h5>Permissions</h5>
+    <p><input
+      bind:checked={requiresBitcoinPermission}
+      type="checkbox"
+      id="bitcoinPermission"
+    /><label class="checkbox-label" for="bitcoinPermission">Needs bitcoind access</label></p>
+    <p><input
+      bind:checked={requiresLndPermission}
+      type="checkbox"
+      id="lndPermission"
+    /><label class="checkbox-label" for="lndPermission">Needs LND access</label></p>
+    <p><input
+      bind:checked={requiresElectrumPermission}
+      type="checkbox"
+      id="electrumPermission"
+      placeholder="3000"
+    /><label class="checkbox-label" for="electrumPermission">Needs Electrum Server access</label></p>
   </div>
   <div class="right-view half highlight">
     <Highlight language={yamlHighlight} code={appData} />
@@ -125,7 +151,12 @@
     margin-bottom: 0.5rem;
   }
 
-  input {
+  input:not([type="checkbox"]) {
     width: 75%;
+  }
+
+  .checkbox-label {
+    display: inline;
+    padding-left: 1rem;
   }
 </style>
