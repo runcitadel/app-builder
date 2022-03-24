@@ -14,6 +14,7 @@
   let mainImage = "";
   let mainPort = 0;
   $: appData = YAML.stringify({
+    version: 2,
     metadata: {
       name,
       tagline,
