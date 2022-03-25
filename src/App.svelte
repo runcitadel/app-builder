@@ -12,6 +12,8 @@
   let repository = "";
   let defaultPassword = "";
   let mainImage = "";
+  let description = "";
+  let support = "";
   let mainPort = 0;
   let requiresLndPermission = true;
   let requiresBitcoinPermission = true;
@@ -30,9 +32,11 @@
       category,
       developer,
       website,
-      repository,
+      repo: repository,
       ...(defaultPassword ? { defaultPassword } : {}),
       dependencies,
+      support,
+      description,
     },
     containers: [{
       name: "main",
@@ -79,6 +83,11 @@
       id="appWebsite"
       placeholder="https://example.com"
     />
+    <label for="appSupportWebsite">App support website</label><input
+      bind:value={support}
+      id="appSupportWebsite"
+      placeholder="https://example.com"
+    />
     <label for="appRepo">App source code repository</label><input
       bind:value={repository}
       id="appRepo"
@@ -88,6 +97,10 @@
       bind:value={defaultPassword}
       id="appPw"
       placeholder="password123!"
+    />
+    <label for="appDescription">App description</label><textarea
+      bind:value={description}
+      id="appDescription"
     />
     <h2>Containers</h2>
     <h4>Main container</h4>
